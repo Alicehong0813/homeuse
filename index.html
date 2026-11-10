@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>小刺蝟記帳本</title>
+<title>小白狐記帳本</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="小刺蝟記帳">
+<meta name="apple-mobile-web-app-title" content="小白狐記帳">
 <meta name="theme-color" content="#FFF6E9">
 <style>
 :root{
@@ -23,7 +23,7 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
 .xpbar{width:120px;height:10px;background:#F3E3CF;border-radius:9px;overflow:hidden;margin-top:4px}
 .xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#FF9F1C);width:0;transition:width .6s}
 .streak{background:#fff;border-radius:20px;padding:6px 12px;font-weight:700;font-size:14px;box-shadow:0 2px 0 var(--line)}
-.stage{position:relative;background:linear-gradient(#E9F4E1,#FFF6E9);border-radius:28px;padding:10px 10px 16px;text-align:center;overflow:hidden}
+.stage{position:relative;background:linear-gradient(#E3EEF9,#FFF6E9);border-radius:28px;padding:10px 10px 16px;text-align:center;overflow:hidden}
 .bubble{position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto;min-height:68px!important;background:#fff;border-radius:18px;padding:10px 14px;font-weight:700;font-size:16px;line-height:1.4;max-width:92%;box-shadow:0 3px 0 var(--line);min-height:44px}
 .bubble:after{content:"";position:absolute;bottom:-10px;left:50%;margin-left:-10px;border:10px solid transparent;border-top-color:#fff;border-bottom:0}
 #pig{width:170px;height:150px;margin-top:8px;transition:transform .2s}
@@ -115,38 +115,40 @@ header{display:flex;justify-content:space-between;align-items:center;margin-bott
   </header>
 
   <div class="stage" id="stage">
-    <div class="bubble" id="say">嗨！我是小刺蝟刺刺 🦔 今天有錢錢進出嗎？</div>
-    <svg id="pig" viewBox="0 0 200 170" aria-label="小刺蝟">
-      <ellipse cx="100" cy="160" rx="62" ry="7" fill="#000" opacity=".08"/>
-      <path d="M38 119 L18 115 L34 104 L16 95 L35 88 L20 76 L40 73 L28 58 L48 60 L42 42 L61 49 L59 31 L75 42 L79 23 L92 38 L100 21 L108 38 L121 23 L125 42 L141 31 L139 49 L158 42 L152 60 L172 58 L160 73 L180 76 L165 88 L184 95 L166 104 L182 115 L162 119Z" fill="#8B5E3C" stroke="#6E4628" stroke-width="3" stroke-linejoin="round"/>
-      <circle cx="60" cy="36" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/><circle cx="100" cy="25" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/><circle cx="140" cy="36" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/>
-      <ellipse cx="100" cy="106" rx="66" ry="52" fill="#B07A4F"/>
-      <circle cx="58" cy="66" r="12" fill="#F6D9B8" stroke="#B07A4F" stroke-width="4"/><circle cx="142" cy="66" r="12" fill="#F6D9B8" stroke="#B07A4F" stroke-width="4"/>
-      <ellipse cx="100" cy="108" rx="52" ry="44" fill="#F6D9B8"/>
-      <rect x="58" y="142" width="18" height="16" rx="7" fill="#8B5E3C"/><rect x="124" y="142" width="18" height="16" rx="7" fill="#8B5E3C"/>
+    <div class="bubble" id="say">嗨！我是小白狐狸白白 🦊 今天有錢錢進出嗎？</div>
+    <svg id="pig" viewBox="0 0 200 170" aria-label="小白狐狸">
+      <ellipse cx="100" cy="162" rx="66" ry="7" fill="#000" opacity=".08"/>
+      <path d="M128 150 Q196 150 190 92 Q186 54 160 40 Q176 72 160 98 Q148 120 120 128Z" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M160 40 Q176 72 168 86 Q186 74 182 58 Q176 46 160 40Z" fill="#EAF1F8"/>
+      <ellipse cx="100" cy="142" rx="40" ry="22" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/>
+      <rect x="72" y="146" width="20" height="16" rx="8" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/><rect x="108" y="146" width="20" height="16" rx="8" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M50 66 L58 10 L92 50Z" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/><path d="M150 66 L142 10 L108 50Z" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M60 56 L63 26 L82 50Z" fill="#FFC6D3"/><path d="M140 56 L137 26 L118 50Z" fill="#FFC6D3"/>
+      <path d="M100 46 Q140 44 160 70 Q168 90 158 102 L170 108 L150 116 Q128 140 100 146 Q72 140 50 116 L30 108 L42 102 Q32 90 40 70 Q60 44 100 46Z" fill="#fff" stroke="#C9D6E3" stroke-width="3" stroke-linejoin="round"/>
+      <ellipse cx="100" cy="122" rx="24" ry="17" fill="#F4F8FC"/>
       <g id="eyes">
-        <circle cx="80" cy="96" r="7" fill="#3B2F2F"/><circle cx="120" cy="96" r="7" fill="#3B2F2F"/>
-        <circle cx="82" cy="94" r="2.5" fill="#fff"/><circle cx="122" cy="94" r="2.5" fill="#fff"/>
+        <ellipse cx="76" cy="90" rx="7" ry="8" fill="#3B2F2F"/><ellipse cx="124" cy="90" rx="7" ry="8" fill="#3B2F2F"/>
+        <circle cx="78" cy="87" r="2.6" fill="#fff"/><circle cx="126" cy="87" r="2.6" fill="#fff"/>
       </g>
       <g id="happyEyes" style="display:none">
-        <path d="M71 98 Q80 86 89 98" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M111 98 Q120 86 129 98" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M67 92 Q76 80 85 92" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M115 92 Q124 80 133 92" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
       </g>
-      <ellipse cx="66" cy="114" rx="9" ry="5.5" fill="#FF8FAB" opacity=".7"/><ellipse cx="134" cy="114" rx="9" ry="5.5" fill="#FF8FAB" opacity=".7"/>
-      <ellipse cx="100" cy="112" rx="8" ry="6" fill="#3B2F2F"/><circle cx="97" cy="110" r="2" fill="#fff" opacity=".7"/>
+      <ellipse cx="60" cy="106" rx="9" ry="5.5" fill="#FF9FB6" opacity=".55"/><ellipse cx="140" cy="106" rx="9" ry="5.5" fill="#FF9FB6" opacity=".55"/>
+      <path d="M93 113 Q100 109 107 113 Q104 121 100 121 Q96 121 93 113Z" fill="#3B2F2F"/>
       <path id="mouth" d="M88 128 Q100 138 112 128" stroke="#3B2F2F" stroke-width="4" fill="none" stroke-linecap="round"/>
     </svg>
-    <div class="balance">刺刺的存錢罐裡有<b id="bal">$0</b></div>
+    <div class="balance">白白的存錢罐裡有<b id="bal">$0</b></div>
   </div>
 
   <div class="goal" id="goalCard">
     <h3><span id="goalName">🎯 還沒有存錢目標</span><button class="linkbtn" id="goalBtn">設定目標</button></h3>
     <div class="bar"><i id="goalBar"></i></div>
-    <small id="goalTxt">想買什麼東西？設一個目標，刺刺陪你一起存！</small>
+    <small id="goalTxt">想買什麼東西？設一個目標，白白陪你一起存！</small>
   </div>
 
   <div class="actions">
-    <button class="big in" id="btnIn"><span>🦔🪙</span>存錢</button>
+    <button class="big in" id="btnIn"><span>🦊🪙</span>存錢</button>
     <button class="big out" id="btnOut"><span>🛍️</span>花錢</button>
   </div>
 
@@ -186,10 +188,10 @@ let S={records:[],xp:0,badges:[],goal:null,thinks:0,days:[]};
 
 // ---------- storage (this phone) ----------
 let CFG={formUrl:"",map:{},name:""};
-function localLoad(){try{const v=localStorage.getItem("hedgehog_v1");if(v)return JSON.parse(v);}catch(e){}return null}
-function save(){try{localStorage.setItem("hedgehog_v1",JSON.stringify(S))}catch(e){}}
-function cfgSave(){try{localStorage.setItem("hedgehog_cfg",JSON.stringify(CFG))}catch(e){}}
-try{const c=localStorage.getItem("hedgehog_cfg");if(c)CFG=Object.assign(CFG,JSON.parse(c))}catch(e){}
+function localLoad(){try{const v=localStorage.getItem("fox_v1");if(v)return JSON.parse(v);}catch(e){}return null}
+function save(){try{localStorage.setItem("fox_v1",JSON.stringify(S))}catch(e){}}
+function cfgSave(){try{localStorage.setItem("fox_cfg",JSON.stringify(CFG))}catch(e){}}
+try{const c=localStorage.getItem("fox_cfg");if(c)CFG=Object.assign(CFG,JSON.parse(c))}catch(e){}
 const l=localLoad(); if(l) S=Object.assign(S,l);
 if(!S.queue)S.queue=[];
 
@@ -273,7 +275,7 @@ function render(){
     $("goalName").textContent="🎯 "+S.goal.name+"　"+fmt(S.goal.amt);$("goalBtn").textContent="修改";
     $("goalBar").style.width=p+"%";
     $("goalTxt").textContent=b>=S.goal.amt?"🎉 錢已經存夠了！可以跟爸媽討論要不要買囉":"已經存了 "+Math.floor(p)+"%，還差 "+fmt(S.goal.amt-b)+"！";
-  }else{$("goalName").textContent="🎯 還沒有存錢目標";$("goalBtn").textContent="設定目標";$("goalBar").style.width="0";$("goalTxt").textContent="想買什麼東西？設一個目標，刺刺陪你一起存！"}
+  }else{$("goalName").textContent="🎯 還沒有存錢目標";$("goalBtn").textContent="設定目標";$("goalBar").style.width="0";$("goalTxt").textContent="想買什麼東西？設一個目標，白白陪你一起存！"}
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x.dataset.tab===tab));
   const P=$("panel");
   if(tab==="list"){
@@ -291,7 +293,7 @@ function render(){
     const byCat={};rs.filter(r=>r.type==="out").forEach(r=>{byCat[r.emo+" "+r.cat]=(byCat[r.emo+" "+r.cat]||0)+r.amt});
     const top=Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
     const tot=need+want||1;
-    let tip=!rs.length?"這週還沒有紀錄，刺刺好無聊 🥱":inn>=out?"這週存的比花的多，刺刺的存錢罐滿滿！😋":"這週花的比存的多，下週試試看多存一點？💪";
+    let tip=!rs.length?"這週還沒有紀錄，白白好無聊 🥱":inn>=out?"這週存的比花的多，白白的存錢罐滿滿！😋":"這週花的比存的多，下週試試看多存一點？💪";
     P.innerHTML=`<div class="stats">
       <div class="row"><span>⬇️ 這週存入</span><span style="color:var(--green)">${fmt(inn)}</span></div>
       <div class="row"><span>⬆️ 這週花掉</span><span style="color:var(--red)">${fmt(out)}</span></div>
@@ -301,7 +303,7 @@ function render(){
       <div style="margin-top:14px;font-weight:900">需要 vs 想要</div>
       <div class="split"><i style="width:${need/tot*100}%;background:var(--blue)"></i><i style="width:${want/tot*100}%;background:var(--gold)"></i></div>
       <div class="row" style="font-size:13px"><span style="color:#2F6FB3">需要 ${fmt(need)}</span><span style="color:#B5730A">想要 ${fmt(want)}</span></div>
-      <div style="margin-top:12px;background:#FBEFE3;border-radius:14px;padding:10px;font-weight:700">🦔 ${tip}</div></div>`;
+      <div style="margin-top:12px;background:#EAF2FB;border-radius:14px;padding:10px;font-weight:700">🦊 ${tip}</div></div>`;
   }else{
     P.innerHTML='<div class="badges">'+BADGES.map(x=>`<div class="badge ${S.badges.includes(x.id)?"":"lock"}"><span class="b">${x.e}</span>${x.n}<div style="color:var(--soft);font-size:11px;margin-top:3px">${x.t}</div></div>`).join("")+'</div>';
   }
@@ -331,21 +333,21 @@ function openEntry(type){
 }
 function drawEntry(){
   const cats=E.type==="in"?IN_CATS:OUT_CATS;
-  $("sheet").innerHTML=`<h2>${E.type==="in"?"🦔 存進存錢罐":"🛍️ 我要花錢"}</h2>
+  $("sheet").innerHTML=`<h2>${E.type==="in"?"🦊 存進存錢罐":"🛍️ 我要花錢"}</h2>
    <div class="amtshow ${E.type}" id="amtShow">${E.amt?fmt(+E.amt):"$0"}</div>
    <div class="cats">${cats.map(c=>`<button class="cat ${E.cat===c[1]?"on":""}" data-c="${c[1]}" data-e="${c[0]}"><span>${c[0]}</span>${c[1]}${c[2]?`<small style="display:block;font-size:10px;color:var(--soft);font-weight:500">${c[2]}</small>`:""}</button>`).join("")}</div>
    <input class="note" id="note" maxlength="20" placeholder="${E.type==="in"?"寫一點說明（例如：幫媽媽洗碗）":"買了什麼？（例如：早餐、自動鉛筆）"}" value="${esc(E.note)}">
    <div class="pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-k="${n}">${n}</button>`).join("")}<button data-k="C">清除</button><button data-k="0">0</button><button data-k="B">⌫</button></div>
-   <button id="goBtn" class="go ${E.type} ${(+E.amt>0&&E.cat)?"":"dim"}">${E.type==="in"?"收進存錢罐 🦔":"下一步 →"}</button>
+   <button id="goBtn" class="go ${E.type} ${(+E.amt>0&&E.cat)?"":"dim"}">${E.type==="in"?"收進存錢罐 🦊":"下一步 →"}</button>
    <button class="linkbtn" id="cancel" style="display:block;margin:10px auto 0">取消</button>`;
 }
 function updAmt(){$("amtShow").textContent=E.amt?fmt(+E.amt):"$0";$("goBtn").classList.toggle("dim",!(+E.amt>0&&E.cat))}
 function askNeedWant(){
   pigMood("think");
   const b=balance(),amt=+E.amt;
-  const warn=amt>b?`<div style="background:var(--red-l);border-radius:14px;padding:10px;margin-top:10px;font-weight:700;text-align:center">⚠️ 刺刺的存錢罐裡只有 ${fmt(b)}，不夠付 ${fmt(amt)} 喔！<br><small>還是要記下來嗎？（也許是爸媽先幫你付的）</small></div>`:"";
+  const warn=amt>b?`<div style="background:var(--red-l);border-radius:14px;padding:10px;margin-top:10px;font-weight:700;text-align:center">⚠️ 白白的存錢罐裡只有 ${fmt(b)}，不夠付 ${fmt(amt)} 喔！<br><small>還是要記下來嗎？（也許是爸媽先幫你付的）</small></div>`:"";
   const goalW=S.goal&&b<S.goal.amt+amt&&amt<=b?`<div class="qtxt" style="font-size:13px;color:var(--soft);margin-top:8px">💭 花掉的話，離「${esc(S.goal.name)}」會再遠 ${fmt(amt)} 喔</div>`:"";
-  $("sheet").innerHTML=`<h2>🤔 刺刺想問你</h2>
+  $("sheet").innerHTML=`<h2>🤔 白白想問你</h2>
    <div class="qtxt">「${esc(E.note||E.cat)}」 ${fmt(amt)}<br>這個東西是……</div>
    <div class="choice">
      <button data-nw="need"><span>🧭</span>需要<small>沒有它會不方便</small></button>
@@ -369,7 +371,7 @@ function commit(nw){
   const b=balance();
   if(E.type==="in"){
     pigMood("happy");coins(Math.min(10,3+Math.floor(amt/20)));
-    let line=pick(["哇～"+fmt(amt)+" 收進存錢罐了，謝謝你！😋","叮噹！"+fmt(amt)+" 存進來了，你好棒！","我的刺上又多掛了一顆金幣，嘿嘿 🦔"]);
+    let line=pick(["哇～"+fmt(amt)+" 收進存錢罐了，謝謝你！😋","叮噹！"+fmt(amt)+" 存進來了，你好棒！","我的尾巴開心到搖個不停，嘿嘿 🦊"]);
     if(E.cat==="幫忙家事")line="靠自己努力賺來的錢，最珍貴了！👏";
     if(S.goal&&b<S.goal.amt)line+=` 再 ${fmt(S.goal.amt-b)} 就能買「${S.goal.name}」！`;
     say(line);
@@ -437,9 +439,9 @@ $("panel").onclick=e=>{
   else{d.dataset.confirm=1;d.textContent="刪除?";d.style.color="var(--red)";d.style.fontSize="12px";setTimeout(()=>{if(d.isConnected){delete d.dataset.confirm;d.textContent="✕";d.style.color="";d.style.fontSize=""}},2500)}
 };
 $("mask").onclick=e=>{
-  if(e.target.id==="mask"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦔");return}
+  if(e.target.id==="mask"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦊");return}
   const t=e.target.closest("button");
-  if(t&&t.id==="cancel"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦔");return}
+  if(t&&t.id==="cancel"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦊");return}
   if(!E){ // goal / settings sheet
     if(t&&settingsTap(t))return;
     if(t&&t.id==="gSave"){const n=$("gName").value.trim(),a=Math.floor(+$("gAmt").value);
@@ -477,7 +479,7 @@ document.addEventListener("pointerdown",function w(){try{ac=ac||new (window.Audi
 // greeting
 (function(){const s=streak(),h=new Date().getHours();
   if(S.records.length&&!S.days.includes(today())&&s>0)say("你已經連續記帳 "+s+" 天了！今天也來記一筆，不要斷掉喔 🔥");
-  else if(S.records.length)say(pick([h<12?"早安！今天有什麼計畫嗎？☀️":"今天過得好嗎？有錢錢進出要告訴我喔！","我好想你～快來存錢錢 🦔"]));
+  else if(S.records.length)say(pick([h<12?"早安！今天有什麼計畫嗎？☀️":"今天過得好嗎？有錢錢進出要告訴我喔！","我好想你～快來存錢錢 🦊"]));
 })();
 render();syncLabel();
 })();
