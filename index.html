@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>小刺蝟記帳本</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="小刺蝟記帳">
+<meta name="theme-color" content="#FFF6E9">
+<style>
+:root{
+  --bg:#FFF6E9; --card:#fff; --ink:#3B2F2F; --soft:#8A7A70;
+  --pink:#FF8FAB; --pink-d:#E86A8C; --green:#3CB371; --green-l:#DDF5E6;
+  --red:#F2665C; --red-l:#FDE3E0; --gold:#FFC93C; --blue:#5AA9E6; --line:#F0E2D0;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+button{touch-action:manipulation}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;min-height:100vh}
+.wrap{max-width:460px;margin:0 auto;padding:14px 14px 90px}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.lvl{font-weight:900;font-size:15px}
+.xpbar{width:120px;height:10px;background:#F3E3CF;border-radius:9px;overflow:hidden;margin-top:4px}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#FF9F1C);width:0;transition:width .6s}
+.streak{background:#fff;border-radius:20px;padding:6px 12px;font-weight:700;font-size:14px;box-shadow:0 2px 0 var(--line)}
+.stage{position:relative;background:linear-gradient(#E9F4E1,#FFF6E9);border-radius:28px;padding:10px 10px 16px;text-align:center;overflow:hidden}
+.bubble{position:relative;display:flex;align-items:center;justify-content:center;margin:0 auto;min-height:68px!important;background:#fff;border-radius:18px;padding:10px 14px;font-weight:700;font-size:16px;line-height:1.4;max-width:92%;box-shadow:0 3px 0 var(--line);min-height:44px}
+.bubble:after{content:"";position:absolute;bottom:-10px;left:50%;margin-left:-10px;border:10px solid transparent;border-top-color:#fff;border-bottom:0}
+#pig{width:170px;height:150px;margin-top:8px;transition:transform .2s}
+.pig-jump{animation:jump .7s}
+.pig-shake{animation:shake .6s}
+.pig-think{animation:tilt 1.2s ease-in-out}
+@keyframes jump{0%,100%{transform:translateY(0)}30%{transform:translateY(-28px) scale(1.05)}55%{transform:translateY(0) scale(1.08,.92)}}
+@keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+@keyframes tilt{0%,100%{transform:rotate(0)}50%{transform:rotate(-10deg)}}
+.balance{font-size:14px;color:var(--soft);font-weight:700;margin-top:4px}
+.balance b{display:block;font-size:40px;color:var(--ink);font-weight:900;letter-spacing:1px}
+.coin{position:absolute;top:-30px;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFE58A,#FFC93C 55%,#E0A800);border:2px solid #D49A00;pointer-events:none;will-change:transform,opacity;animation:drop .9s ease-in forwards}
+@keyframes drop{to{transform:translate3d(0,190px,0);opacity:0}}
+.fly{position:absolute;font-size:26px;pointer-events:none;will-change:transform,opacity;animation:flyout 1s ease-out forwards}
+@keyframes flyout{0%{transform:translate(0,0);opacity:1}100%{transform:translate3d(var(--dx),-140px,0);opacity:0}}
+.goal{background:#fff;border-radius:22px;padding:14px;margin-top:12px;box-shadow:0 3px 0 var(--line)}
+.goal h3{margin:0 0 8px;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.goal .bar{height:18px;background:#F3E3CF;border-radius:12px;overflow:hidden;position:relative}
+.goal .bar i{display:block;height:100%;background:linear-gradient(90deg,#7ED6A5,var(--green));width:0;transition:width .8s;border-radius:12px}
+.goal small{color:var(--soft);font-weight:700;display:block;margin-top:6px}
+.linkbtn{background:none;border:0;color:var(--pink-d);font:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:12px 16px;min-height:44px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.big{border:0;border-radius:22px;padding:18px 8px;font:inherit;font-weight:900;font-size:20px;color:#fff;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15);transition:transform .1s}
+.big:active{filter:brightness(.9)}
+.big.in{background:var(--green)} .big.out{background:var(--red)}
+.big span{display:block;font-size:30px}
+.tabs{display:flex;gap:8px;margin:20px 0 10px}
+.tabs button{flex:1;border:0;background:#fff;border-radius:14px;padding:10px;font:inherit;font-weight:700;color:var(--soft);cursor:pointer}
+.tabs button.on{background:var(--ink);color:#fff}
+.rec{display:flex;align-items:center;gap:10px;background:#fff;border-radius:16px;padding:10px 12px;margin-bottom:8px;box-shadow:0 2px 0 var(--line)}
+.rec .emo{font-size:26px;width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.rec .mid{flex:1;min-width:0}
+.rec .mid b{display:block;font-size:15px}
+.rec .mid small{color:var(--soft);font-size:12px}
+.rec .amt{font-weight:900;font-size:17px}
+.rec .del{border:0;background:none;color:#ccc;font-size:16px;cursor:pointer;min-width:44px;min-height:44px;margin-right:-8px}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:8px;margin-left:4px;font-weight:700;vertical-align:1px}
+.tag.need{background:#E3F0FF;color:#2F6FB3}.tag.want{background:#FFF0D6;color:#B5730A}
+.empty{text-align:center;color:var(--soft);padding:24px;font-weight:700}
+.stats{background:#fff;border-radius:22px;padding:16px;box-shadow:0 3px 0 var(--line)}
+.stats .row{display:flex;justify-content:space-between;margin:6px 0;font-weight:700}
+.split{display:flex;height:22px;border-radius:12px;overflow:hidden;margin:10px 0 4px;background:#F3E3CF}
+.split i{display:block;height:100%}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px}
+.badge{background:#fff;border-radius:18px;padding:12px 6px;text-align:center;box-shadow:0 2px 0 var(--line);font-size:12px;font-weight:700}
+.badge .b{font-size:32px;display:block;filter:none}
+.badge.lock{opacity:.45}.badge.lock .b{filter:grayscale(1)}
+/* sheet */
+.mask{position:fixed;inset:0;background:rgba(59,47,47,.45);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.mask.show{display:flex}
+.sheet{background:var(--bg);width:100%;max-width:460px;border-radius:28px 28px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));animation:up .25s ease-out;max-height:92vh;overflow:auto}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet h2{margin:0 0 10px;font-size:20px;text-align:center}
+.amtshow{text-align:center;font-size:44px;font-weight:900;margin:4px 0 10px}
+.amtshow.in{color:var(--green)}.amtshow.out{color:var(--red)}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.cat{border:2px solid transparent;background:#fff;border-radius:16px;padding:8px 2px;text-align:center;font:inherit;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink)}
+.cat span{display:block;font-size:26px}
+.cat.on{border-color:var(--ink);background:#FFF0C2}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pad button{border:0;background:#fff;border-radius:16px;padding:16px 0;user-select:none;-webkit-user-select:none;font:inherit;font-size:24px;font-weight:900;color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.pad button:active,.pad button.hit{background:#FFF0C2}
+.go{width:100%;margin-top:12px;border:0;border-radius:18px;padding:16px;font:inherit;font-weight:900;font-size:19px;color:#fff;cursor:pointer}
+.go.in{background:var(--green)}.go.out{background:var(--red)}
+.go.dim{opacity:.45}
+.nudge{animation:shake .5s}
+.note{width:100%;border:2px solid var(--line);border-radius:14px;padding:10px 12px;font:inherit;font-size:15px;margin-bottom:10px;background:#fff}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 4px}
+.choice button{border:3px solid transparent;background:#fff;border-radius:20px;padding:16px 6px;font:inherit;font-weight:900;font-size:17px;cursor:pointer;color:var(--ink)}
+.choice button span{display:block;font-size:36px}
+.choice button small{display:block;font-size:12px;color:var(--soft);font-weight:700;margin-top:4px}
+.qtxt{text-align:center;font-weight:700;font-size:16px;line-height:1.5}
+.toast{pointer-events:none;position:fixed;left:50%;top:18px;transform:translateX(-50%) translateY(-120px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:18px;font-weight:700;z-index:40;transition:transform .35s;max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:30;pointer-events:none;will-change:transform;animation:fall linear forwards}
+@keyframes fall{to{transform:translate3d(0,110vh,0) rotate(540deg)}}
+@media (prefers-reduced-motion:reduce){.coin,.fly,.confetti{display:none}#pig{animation:none!important}}
+.saving{font-size:12px;color:var(--soft);text-align:center;margin-top:18px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="lvl" id="lvl">Lv.1 記帳小新手</div>
+      <div class="xpbar"><i id="xp"></i></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center"><div class="streak" id="streak">🔥 0 天</div><button id="gear" aria-label="家長設定" style="border:0;background:#fff;border-radius:50%;width:40px;height:40px;font-size:20px;box-shadow:0 2px 0 var(--line)">⚙️</button></div>
+  </header>
+
+  <div class="stage" id="stage">
+    <div class="bubble" id="say">嗨！我是小刺蝟刺刺 🦔 今天有錢錢進出嗎？</div>
+    <svg id="pig" viewBox="0 0 200 170" aria-label="小刺蝟">
+      <ellipse cx="100" cy="160" rx="62" ry="7" fill="#000" opacity=".08"/>
+      <path d="M38 119 L18 115 L34 104 L16 95 L35 88 L20 76 L40 73 L28 58 L48 60 L42 42 L61 49 L59 31 L75 42 L79 23 L92 38 L100 21 L108 38 L121 23 L125 42 L141 31 L139 49 L158 42 L152 60 L172 58 L160 73 L180 76 L165 88 L184 95 L166 104 L182 115 L162 119Z" fill="#8B5E3C" stroke="#6E4628" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="60" cy="36" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/><circle cx="100" cy="25" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/><circle cx="140" cy="36" r="6" fill="#FFC93C" stroke="#E0A800" stroke-width="2"/>
+      <ellipse cx="100" cy="106" rx="66" ry="52" fill="#B07A4F"/>
+      <circle cx="58" cy="66" r="12" fill="#F6D9B8" stroke="#B07A4F" stroke-width="4"/><circle cx="142" cy="66" r="12" fill="#F6D9B8" stroke="#B07A4F" stroke-width="4"/>
+      <ellipse cx="100" cy="108" rx="52" ry="44" fill="#F6D9B8"/>
+      <rect x="58" y="142" width="18" height="16" rx="7" fill="#8B5E3C"/><rect x="124" y="142" width="18" height="16" rx="7" fill="#8B5E3C"/>
+      <g id="eyes">
+        <circle cx="80" cy="96" r="7" fill="#3B2F2F"/><circle cx="120" cy="96" r="7" fill="#3B2F2F"/>
+        <circle cx="82" cy="94" r="2.5" fill="#fff"/><circle cx="122" cy="94" r="2.5" fill="#fff"/>
+      </g>
+      <g id="happyEyes" style="display:none">
+        <path d="M71 98 Q80 86 89 98" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M111 98 Q120 86 129 98" stroke="#3B2F2F" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g>
+      <ellipse cx="66" cy="114" rx="9" ry="5.5" fill="#FF8FAB" opacity=".7"/><ellipse cx="134" cy="114" rx="9" ry="5.5" fill="#FF8FAB" opacity=".7"/>
+      <ellipse cx="100" cy="112" rx="8" ry="6" fill="#3B2F2F"/><circle cx="97" cy="110" r="2" fill="#fff" opacity=".7"/>
+      <path id="mouth" d="M88 128 Q100 138 112 128" stroke="#3B2F2F" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="balance">刺刺的存錢罐裡有<b id="bal">$0</b></div>
+  </div>
+
+  <div class="goal" id="goalCard">
+    <h3><span id="goalName">🎯 還沒有存錢目標</span><button class="linkbtn" id="goalBtn">設定目標</button></h3>
+    <div class="bar"><i id="goalBar"></i></div>
+    <small id="goalTxt">想買什麼東西？設一個目標，刺刺陪你一起存！</small>
+  </div>
+
+  <div class="actions">
+    <button class="big in" id="btnIn"><span>🦔🪙</span>存錢</button>
+    <button class="big out" id="btnOut"><span>🛍️</span>花錢</button>
+  </div>
+
+  <div class="tabs">
+    <button class="on" data-tab="list">📒 紀錄</button>
+    <button data-tab="stats">📊 這週</button>
+    <button data-tab="badges">🏅 徽章</button>
+  </div>
+  <div id="panel"></div>
+  <div class="saving" id="saving"></div>
+</div>
+
+<!-- entry sheet -->
+<div class="mask" id="mask">
+  <div class="sheet" id="sheet"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+const IN_CATS=[["💰","零用錢"],["🧧","紅包"],["🧹","幫忙家事"],["🎁","禮物"],["⭐","獎勵"],["🪙","撿到存起來"],["📦","賣東西"],["✨","其他"]];
+const OUT_CATS=[["🍙","食","吃的喝的"],["👕","衣","衣服鞋子"],["🏠","住","房間用品"],["🚌","行","交通車資"],["📚","育","文具書本"],["🎮","樂","玩具遊戲"],["💝","送禮/捐款","給別人"],["✨","其他",""]];
+const CAT_TALK={"食":"吃東西要記得均衡，正餐最重要喔 🍙","衣":"衣服要好好愛惜，可以穿很久 👕","住":"讓房間變得更舒服，很不錯！🏠","行":"出門交通的錢，是真的需要的花費 🚌","育":"花錢讓自己學到東西，超值得！📚","樂":"玩得開心很重要～也別忘了存錢喔 🎮"};
+const BADGES=[
+ {id:"first",e:"🌱",n:"第一筆紀錄",t:"記下第一筆"},
+ {id:"r10",e:"📒",n:"記帳達人",t:"記滿 10 筆"},
+ {id:"s3",e:"🔥",n:"連續 3 天",t:"連續記帳 3 天"},
+ {id:"s7",e:"🌈",n:"一週不間斷",t:"連續記帳 7 天"},
+ {id:"b100",e:"🪙",n:"百元富翁",t:"存款到 $100"},
+ {id:"b500",e:"💎",n:"五百小金庫",t:"存款到 $500"},
+ {id:"goal",e:"🏆",n:"夢想達成",t:"完成存錢目標"},
+ {id:"think",e:"🧠",n:"想清楚再買",t:"花錢前想 5 次「需要/想要」"},
+ {id:"give",e:"💝",n:"溫暖的心",t:"送禮或捐款一次"}
+];
+const LV=["記帳小新手","零錢小管家","存錢小勇士","理財小達人","金庫守護者","財富小魔法師"];
+let S={records:[],xp:0,badges:[],goal:null,thinks:0,days:[]};
+
+// ---------- storage (this phone) ----------
+let CFG={formUrl:"",map:{},name:""};
+function localLoad(){try{const v=localStorage.getItem("hedgehog_v1");if(v)return JSON.parse(v);}catch(e){}return null}
+function save(){try{localStorage.setItem("hedgehog_v1",JSON.stringify(S))}catch(e){}}
+function cfgSave(){try{localStorage.setItem("hedgehog_cfg",JSON.stringify(CFG))}catch(e){}}
+try{const c=localStorage.getItem("hedgehog_cfg");if(c)CFG=Object.assign(CFG,JSON.parse(c))}catch(e){}
+const l=localLoad(); if(l) S=Object.assign(S,l);
+if(!S.queue)S.queue=[];
+
+// ---------- Google Form sync ----------
+const KEYS={DATE:"日期",TYPE:"類型",AMOUNT:"金額",CATEGORY:"類別",NOTE:"說明",NEEDWANT:"需要或想要",BALANCE:"餘額",NAME:"孩子名字"};
+function parsePrefill(link){
+  const m=link.match(/docs\.google\.com\/forms\/d\/e\/([A-Za-z0-9_-]+)\//);
+  if(!m)return {err:"這不是 Google 表單的「預先填入連結」，請再確認一次"};
+  const url=new URL(link.trim()),map={};
+  url.searchParams.forEach((v,k)=>{if(/^entry\.\d+$/.test(k)){const key=v.trim().toUpperCase();if(KEYS[key])map[key]=k}});
+  if(!map.AMOUNT||!map.TYPE)return {err:"找不到「金額」或「類型」欄位，請確認預先填入時有填 AMOUNT 和 TYPE"};
+  return {formUrl:"https://docs.google.com/forms/d/e/"+m[1]+"/formResponse",map};
+}
+function rowFor(r,bal){return {DATE:r.date,TYPE:r.type==="in"?"存入":"支出",AMOUNT:String(r.amt),CATEGORY:r.cat,NOTE:r.note||"",
+  NEEDWANT:r.nw==="need"?"需要":r.nw==="want"?"想要":"",BALANCE:String(bal),NAME:CFG.name||""}}
+async function postRow(row){
+  const body=new URLSearchParams();
+  Object.keys(CFG.map).forEach(k=>{if(row[k]!==undefined)body.append(CFG.map[k],row[k])});
+  await fetch(CFG.formUrl,{method:"POST",mode:"no-cors",body});
+}
+let flushing=false;
+async function flush(){
+  if(!CFG.formUrl||flushing||!S.queue.length){syncLabel();return}
+  flushing=true;
+  while(S.queue.length){
+    try{await postRow(S.queue[0]);S.queue.shift();save()}catch(e){break}
+  }
+  flushing=false;syncLabel();
+}
+function syncLabel(){
+  const el=document.getElementById("saving");if(!el)return;
+  if(!CFG.formUrl)el.innerHTML='📄 紀錄存在這支手機裡・<b>還沒連結 Google 表單</b>（按右上角 ⚙️）';
+  else if(S.queue.length)el.textContent="⏳ 還有 "+S.queue.length+" 筆等網路恢復後上傳到 Google 表單";
+  else el.textContent="✅ 已同步到 Google 表單";
+}
+window.addEventListener("online",flush);
+setTimeout(flush,800);
+
+// ---------- helpers ----------
+const $=id=>document.getElementById(id);
+const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const balance=()=>S.records.reduce((a,r)=>a+(r.type==="in"?r.amt:-r.amt),0);
+const fmt=n=>"$"+n.toLocaleString();
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function streak(){
+  const set=new Set(S.days);let n=0;const d=new Date();
+  if(!set.has(today())) d.setDate(d.getDate()-1);
+  while(true){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");if(set.has(k)){n++;d.setDate(d.getDate()-1)}else break}
+  return n;
+}
+function level(){let lv=0,need=50,xp=S.xp;while(xp>=need&&lv<LV.length-1){xp-=need;lv++;need+=30}return{lv,xp,need}}
+function say(t){$("say").textContent=t}
+function pigMood(m){
+  const pig=$("pig");pig.classList.remove("pig-jump","pig-shake","pig-think");void pig.offsetWidth;
+  $("eyes").style.display=m==="happy"?"none":"";$("happyEyes").style.display=m==="happy"?"":"none";
+  $("mouth").setAttribute("d",m==="sad"?"M88 134 Q100 124 112 134":m==="think"?"M90 130 L110 130":"M88 128 Q100 138 112 128");
+  if(m==="happy")pig.classList.add("pig-jump");if(m==="sad")pig.classList.add("pig-shake");if(m==="think")pig.classList.add("pig-think");
+}
+function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2600)}
+let ac=null;
+function sound(kind){
+  try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const now=ac.currentTime;
+    const notes=kind==="in"?[988,1319]:kind==="out"?[660,440]:[523,659,784,1047];
+    notes.forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.type=kind==="out"?"triangle":"square";o.frequency.value=f;
+      g.gain.setValueAtTime(.0001,now+i*.09);g.gain.exponentialRampToValueAtTime(.12,now+i*.09+.01);g.gain.exponentialRampToValueAtTime(.0001,now+i*.09+.18);
+      o.connect(g).connect(ac.destination);o.start(now+i*.09);o.stop(now+i*.09+.2)});
+  }catch(e){}
+}
+function coins(n){const st=$("stage");for(let i=0;i<n;i++){const c=document.createElement("div");c.className="coin";c.style.left=(20+Math.random()*60)+"%";c.style.animationDelay=(i*.08)+"s";st.appendChild(c);setTimeout(()=>c.remove(),1400)}}
+function flyOut(emo){const st=$("stage");for(let i=0;i<4;i++){const c=document.createElement("div");c.className="fly";c.textContent=i%2?"💸":emo;c.style.left="45%";c.style.top="55%";c.style.setProperty("--dx",(Math.random()*160-80)+"px");c.style.animationDelay=(i*.1)+"s";st.appendChild(c);setTimeout(()=>c.remove(),1500)}}
+function confetti(){const cs=["#FF8FAB","#FFC93C","#3CB371","#5AA9E6","#F2665C"];for(let i=0;i<28;i++){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=pick(cs);c.style.animationDuration=(1.5+Math.random()*1.5)+"s";c.style.animationDelay=Math.random()*.4+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),3500)}}
+
+// ---------- render ----------
+let tab="list";
+function render(){
+  const b=balance();$("bal").textContent=fmt(b);
+  const L=level();$("lvl").textContent="Lv."+(L.lv+1)+" "+LV[L.lv];$("xp").style.width=Math.min(100,L.xp/L.need*100)+"%";
+  $("streak").textContent="🔥 "+streak()+" 天";
+  if(S.goal){
+    const p=Math.max(0,Math.min(100,b/S.goal.amt*100));
+    $("goalName").textContent="🎯 "+S.goal.name+"　"+fmt(S.goal.amt);$("goalBtn").textContent="修改";
+    $("goalBar").style.width=p+"%";
+    $("goalTxt").textContent=b>=S.goal.amt?"🎉 錢已經存夠了！可以跟爸媽討論要不要買囉":"已經存了 "+Math.floor(p)+"%，還差 "+fmt(S.goal.amt-b)+"！";
+  }else{$("goalName").textContent="🎯 還沒有存錢目標";$("goalBtn").textContent="設定目標";$("goalBar").style.width="0";$("goalTxt").textContent="想買什麼東西？設一個目標，刺刺陪你一起存！"}
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x.dataset.tab===tab));
+  const P=$("panel");
+  if(tab==="list"){
+    if(!S.records.length){P.innerHTML='<div class="empty">還沒有紀錄喔～<br>按上面的按鈕記下第一筆吧！🌱</div>';return}
+    P.innerHTML=S.records.slice().reverse().slice(0,50).map(r=>`
+      <div class="rec"><div class="emo" style="background:${r.type==="in"?"var(--green-l)":"var(--red-l)"}">${r.emo}</div>
+      <div class="mid"><b>${esc(r.note||r.cat)}${r.nw?`<span class="tag ${r.nw}">${r.nw==="need"?"需要":"想要"}</span>`:""}</b><small>${r.cat}・${r.date.slice(5).replace("-","/")}</small></div>
+      <div class="amt" style="color:${r.type==="in"?"var(--green)":"var(--red)"}">${r.type==="in"?"+":"-"}${fmt(r.amt)}</div>
+      <button class="del" data-id="${r.id}" aria-label="刪除">✕</button></div>`).join("");
+  }else if(tab==="stats"){
+    const wk=new Date();wk.setDate(wk.getDate()-6);const ws=wk.toISOString().slice(0,10);
+    const rs=S.records.filter(r=>r.date>=ws);
+    const inn=rs.filter(r=>r.type==="in").reduce((a,r)=>a+r.amt,0),out=rs.filter(r=>r.type==="out").reduce((a,r)=>a+r.amt,0);
+    const need=rs.filter(r=>r.nw==="need").reduce((a,r)=>a+r.amt,0),want=rs.filter(r=>r.nw==="want").reduce((a,r)=>a+r.amt,0);
+    const byCat={};rs.filter(r=>r.type==="out").forEach(r=>{byCat[r.emo+" "+r.cat]=(byCat[r.emo+" "+r.cat]||0)+r.amt});
+    const top=Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+    const tot=need+want||1;
+    let tip=!rs.length?"這週還沒有紀錄，刺刺好無聊 🥱":inn>=out?"這週存的比花的多，刺刺的存錢罐滿滿！😋":"這週花的比存的多，下週試試看多存一點？💪";
+    P.innerHTML=`<div class="stats">
+      <div class="row"><span>⬇️ 這週存入</span><span style="color:var(--green)">${fmt(inn)}</span></div>
+      <div class="row"><span>⬆️ 這週花掉</span><span style="color:var(--red)">${fmt(out)}</span></div>
+      <div class="row"><span>🏆 花最多的是</span><span>${top?top[0]+" "+fmt(top[1]):"—"}</span></div>
+      <div style="margin-top:14px;font-weight:900">錢花在哪裡？</div>
+      ${OUT_CATS.map(c=>{const v=rs.filter(r=>r.type==="out"&&r.cat===c[1]).reduce((a,r)=>a+r.amt,0);return `<div style="display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px;font-weight:700"><span style="width:62px">${c[0]} ${c[1].length>2?c[1].slice(0,2):c[1]}</span><div style="flex:1;height:12px;background:#F3E3CF;border-radius:8px;overflow:hidden"><i style="display:block;height:100%;width:${out?v/out*100:0}%;background:var(--pink)"></i></div><span style="width:48px;text-align:right">${fmt(v)}</span></div>`}).join("")}
+      <div style="margin-top:14px;font-weight:900">需要 vs 想要</div>
+      <div class="split"><i style="width:${need/tot*100}%;background:var(--blue)"></i><i style="width:${want/tot*100}%;background:var(--gold)"></i></div>
+      <div class="row" style="font-size:13px"><span style="color:#2F6FB3">需要 ${fmt(need)}</span><span style="color:#B5730A">想要 ${fmt(want)}</span></div>
+      <div style="margin-top:12px;background:#FBEFE3;border-radius:14px;padding:10px;font-weight:700">🦔 ${tip}</div></div>`;
+  }else{
+    P.innerHTML='<div class="badges">'+BADGES.map(x=>`<div class="badge ${S.badges.includes(x.id)?"":"lock"}"><span class="b">${x.e}</span>${x.n}<div style="color:var(--soft);font-size:11px;margin-top:3px">${x.t}</div></div>`).join("")+'</div>';
+  }
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+// ---------- badges & xp ----------
+function check(){
+  const b=balance(),got=[];
+  const add=id=>{if(!S.badges.includes(id)){S.badges.push(id);got.push(id)}};
+  if(S.records.length>=1)add("first");if(S.records.length>=10)add("r10");
+  const s=streak();if(s>=3)add("s3");if(s>=7)add("s7");
+  if(b>=100)add("b100");if(b>=500)add("b500");
+  if(S.goal&&b>=S.goal.amt)add("goal");
+  if(S.thinks>=5)add("think");
+  if(S.records.some(r=>r.cat==="送禮/捐款"))add("give");
+  return got;
+}
+function gainXP(n){const before=level().lv;S.xp+=n;const after=level().lv;return after>before}
+
+// ---------- entry flow ----------
+let E=null;
+function openEntry(type){
+  E={type,amt:"",cat:null,emo:null,note:""};
+  pigMood("think");say(type==="in"?"哇！有錢錢要進來嗎？👀":"要花錢了嗎？先告訴我買什麼～");
+  drawEntry();$("mask").classList.add("show");
+}
+function drawEntry(){
+  const cats=E.type==="in"?IN_CATS:OUT_CATS;
+  $("sheet").innerHTML=`<h2>${E.type==="in"?"🦔 存進存錢罐":"🛍️ 我要花錢"}</h2>
+   <div class="amtshow ${E.type}" id="amtShow">${E.amt?fmt(+E.amt):"$0"}</div>
+   <div class="cats">${cats.map(c=>`<button class="cat ${E.cat===c[1]?"on":""}" data-c="${c[1]}" data-e="${c[0]}"><span>${c[0]}</span>${c[1]}${c[2]?`<small style="display:block;font-size:10px;color:var(--soft);font-weight:500">${c[2]}</small>`:""}</button>`).join("")}</div>
+   <input class="note" id="note" maxlength="20" placeholder="${E.type==="in"?"寫一點說明（例如：幫媽媽洗碗）":"買了什麼？（例如：早餐、自動鉛筆）"}" value="${esc(E.note)}">
+   <div class="pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-k="${n}">${n}</button>`).join("")}<button data-k="C">清除</button><button data-k="0">0</button><button data-k="B">⌫</button></div>
+   <button id="goBtn" class="go ${E.type} ${(+E.amt>0&&E.cat)?"":"dim"}">${E.type==="in"?"收進存錢罐 🦔":"下一步 →"}</button>
+   <button class="linkbtn" id="cancel" style="display:block;margin:10px auto 0">取消</button>`;
+}
+function updAmt(){$("amtShow").textContent=E.amt?fmt(+E.amt):"$0";$("goBtn").classList.toggle("dim",!(+E.amt>0&&E.cat))}
+function askNeedWant(){
+  pigMood("think");
+  const b=balance(),amt=+E.amt;
+  const warn=amt>b?`<div style="background:var(--red-l);border-radius:14px;padding:10px;margin-top:10px;font-weight:700;text-align:center">⚠️ 刺刺的存錢罐裡只有 ${fmt(b)}，不夠付 ${fmt(amt)} 喔！<br><small>還是要記下來嗎？（也許是爸媽先幫你付的）</small></div>`:"";
+  const goalW=S.goal&&b<S.goal.amt+amt&&amt<=b?`<div class="qtxt" style="font-size:13px;color:var(--soft);margin-top:8px">💭 花掉的話，離「${esc(S.goal.name)}」會再遠 ${fmt(amt)} 喔</div>`:"";
+  $("sheet").innerHTML=`<h2>🤔 刺刺想問你</h2>
+   <div class="qtxt">「${esc(E.note||E.cat)}」 ${fmt(amt)}<br>這個東西是……</div>
+   <div class="choice">
+     <button data-nw="need"><span>🧭</span>需要<small>沒有它會不方便</small></button>
+     <button data-nw="want"><span>💖</span>想要<small>有了會很開心</small></button>
+   </div>${goalW}${warn}
+   <button class="linkbtn" id="back" style="display:block;margin:12px auto 0">← 回上一步</button>`;
+  say("先停下來想一想：這是「需要」還是「想要」呢？");
+}
+function commit(nw){
+  const amt=+E.amt;
+  const r={id:Date.now()+"",type:E.type,amt,cat:E.cat,emo:E.emo,note:E.note.trim(),date:today()};
+  if(nw){r.nw=nw;S.thinks++}
+  const firstToday=!S.days.includes(today());
+  S.records.push(r);if(firstToday)S.days.push(today());
+  S.queue.push(rowFor(r,balance()));
+  let xp=E.type==="in"?10:8; if(nw)xp+=4; if(firstToday)xp+=10;
+  const up=gainXP(xp);
+  const got=check();
+  $("mask").classList.remove("show");
+  sound(E.type);
+  const b=balance();
+  if(E.type==="in"){
+    pigMood("happy");coins(Math.min(10,3+Math.floor(amt/20)));
+    let line=pick(["哇～"+fmt(amt)+" 收進存錢罐了，謝謝你！😋","叮噹！"+fmt(amt)+" 存進來了，你好棒！","我的刺上又多掛了一顆金幣，嘿嘿 🦔"]);
+    if(E.cat==="幫忙家事")line="靠自己努力賺來的錢，最珍貴了！👏";
+    if(S.goal&&b<S.goal.amt)line+=` 再 ${fmt(S.goal.amt-b)} 就能買「${S.goal.name}」！`;
+    say(line);
+  }else{
+    flyOut(E.emo);
+    if(nw==="need"){pigMood("happy");say(pick(["真的需要的東西，花得很值得！👍","會分辨需要，你是理財小高手！"]))}
+    else if(nw==="want"){pigMood("sad");say(pick(["偶爾買想要的東西也很開心～記得不要太常喔 😉","想要的東西買到了！下次可以想想能不能等一等？"]))}
+    if(E.cat==="送禮/捐款"){pigMood("happy");say("把錢用來讓別人開心，你真溫暖 💝")}
+  }
+  setTimeout(()=>pigMood(""),1500);
+  E=null;
+  const msgs=["⭐ +"+xp+" 經驗值"+(firstToday?"（今天第一筆！）":"")];
+  if(up){msgs.push("🎉 升級了！現在是「"+LV[level().lv]+"」");sound("lv")}
+  got.forEach(id=>{const x=BADGES.find(b=>b.id===id);msgs.push("🏅 獲得徽章：「"+x.n+"」")});
+  if(got.length||up)setTimeout(confetti,300);
+  msgs.forEach((m,i)=>setTimeout(()=>toast(m),i*2800));
+  save();flush();requestAnimationFrame(render);
+}
+function openSettings(){
+  $("sheet").innerHTML=`<h2>⚙️ 家長設定</h2>
+   <div style="font-size:14px;line-height:1.6;font-weight:500;margin-bottom:8px">把 Google 表單的<b>「預先填入連結」</b>貼在下面（做法看說明）。</div>
+   <textarea class="note" id="sLink" rows="4" placeholder="https://docs.google.com/forms/d/e/.../viewform?usp=pp_url&entry...">${CFG.formUrl?"（已連結，要更換再貼新的連結）":""}</textarea>
+   <input class="note" id="sName" maxlength="12" placeholder="孩子名字（選填，多個孩子時方便分辨）" value="${esc(CFG.name)}">
+   <div id="sMsg" style="font-size:13px;font-weight:700;min-height:20px;margin-bottom:6px;color:var(--soft)">${CFG.formUrl?"目前已連結的欄位："+Object.keys(CFG.map).map(k=>KEYS[k]).join("、"):""}</div>
+   <button class="go in" id="sSave">儲存</button>
+   ${CFG.formUrl?'<button class="go" id="sTest" style="background:var(--blue)">送一筆測試資料</button>':""}
+   ${S.records.length&&CFG.formUrl?'<button class="linkbtn" id="sAll" style="display:block;margin:6px auto 0">把以前的紀錄全部補送一次</button>':""}
+   ${CFG.formUrl?'<button class="linkbtn" id="sOff" style="display:block;margin:0 auto;color:var(--soft)">取消連結</button>':""}
+   <button class="linkbtn" id="cancel" style="display:block;margin:0 auto">關閉</button>`;
+  $("mask").classList.add("show");
+}
+function settingsTap(t){
+  if(t.id==="sSave"){
+    const link=$("sLink").value.trim();CFG.name=$("sName").value.trim();
+    if(link&&link.indexOf("http")===0){const p=parsePrefill(link);if(p.err){$("sMsg").textContent="⚠️ "+p.err;$("sMsg").style.color="var(--red)";return}
+      CFG.formUrl=p.formUrl;CFG.map=p.map}
+    cfgSave();$("mask").classList.remove("show");toast(CFG.formUrl?"✅ 已連結 Google 表單":"已儲存");flush();return true}
+  if(t.id==="sTest"){postRow({DATE:today(),TYPE:"測試",AMOUNT:"0",CATEGORY:"測試",NOTE:"這是測試資料，可以刪掉",NEEDWANT:"",BALANCE:String(balance()),NAME:CFG.name})
+      .then(()=>{$("sMsg").textContent="📨 已送出！請到表單的「回覆」看看有沒有出現一筆測試資料";$("sMsg").style.color="var(--green)"})
+      .catch(()=>{$("sMsg").textContent="⚠️ 送不出去，請確認手機有網路";$("sMsg").style.color="var(--red)"});return true}
+  if(t.id==="sAll"){let b=0;S.records.forEach(r=>{b+=r.type==="in"?r.amt:-r.amt;S.queue.push(rowFor(r,b))});save();flush();$("mask").classList.remove("show");toast("開始補送 "+S.records.length+" 筆");return true}
+  if(t.id==="sOff"){CFG.formUrl="";CFG.map={};cfgSave();$("mask").classList.remove("show");syncLabel();toast("已取消連結");return true}
+  return false;
+}
+function openGoal(){
+  pigMood("think");say("你想存錢買什麼呢？✨");
+  $("sheet").innerHTML=`<h2>🎯 我的存錢目標</h2>
+   <input class="note" id="gName" maxlength="15" placeholder="想買什麼？（例如：樂高積木）" value="${S.goal?esc(S.goal.name):""}">
+   <input class="note" id="gAmt" type="number" inputmode="numeric" placeholder="要多少錢？" value="${S.goal?S.goal.amt:""}">
+   <button class="go in" id="gSave">設定目標</button>
+   ${S.goal?'<button class="linkbtn" id="gDel" style="display:block;margin:10px auto 0;color:var(--soft)">移除目標</button>':""}
+   <button class="linkbtn" id="cancel" style="display:block;margin:6px auto 0">取消</button>`;
+  $("mask").classList.add("show");
+}
+
+// ---------- events ----------
+$("btnIn").onclick=()=>openEntry("in");
+$("btnOut").onclick=()=>openEntry("out");
+$("goalBtn").onclick=openGoal;
+$("gear").onclick=openSettings;
+document.querySelector(".tabs").onclick=e=>{const b=e.target.closest("button");if(b){tab=b.dataset.tab;render()}};
+$("panel").onclick=e=>{
+  const d=e.target.closest(".del");if(!d)return;
+  if(d.dataset.confirm){S.records=S.records.filter(r=>r.id!==d.dataset.id);save();render();say("好的，那筆紀錄刪掉了～");}
+  else{d.dataset.confirm=1;d.textContent="刪除?";d.style.color="var(--red)";d.style.fontSize="12px";setTimeout(()=>{if(d.isConnected){delete d.dataset.confirm;d.textContent="✕";d.style.color="";d.style.fontSize=""}},2500)}
+};
+$("mask").onclick=e=>{
+  if(e.target.id==="mask"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦔");return}
+  const t=e.target.closest("button");
+  if(t&&t.id==="cancel"){$("mask").classList.remove("show");pigMood("");say("沒關係，有需要再叫我！🦔");return}
+  if(!E){ // goal / settings sheet
+    if(t&&settingsTap(t))return;
+    if(t&&t.id==="gSave"){const n=$("gName").value.trim(),a=Math.floor(+$("gAmt").value);
+      if(!n||!(a>0)){toast("請填寫目標和金額喔");return}
+      S.goal={name:n,amt:a};$("mask").classList.remove("show");pigMood("happy");
+      const b=balance();say(b>=a?"哇！你已經存夠了！":"好！我們一起存到 "+fmt(a)+" 買「"+n+"」！每天一點點 💪");
+      check();save();render();}
+    if(t&&t.id==="gDel"){S.goal=null;$("mask").classList.remove("show");save();render();say("目標移除了，想到新的再告訴我！")}
+    return;
+  }
+  if(!t)return;
+  if(t.dataset.k){const k=t.dataset.k;if(k==="C")E.amt="";else if(k==="B")E.amt=E.amt.slice(0,-1);else if(E.amt.length<6)E.amt=(E.amt+k).replace(/^0+/,"");updAmt();return}
+  if(t.dataset.c){E.cat=t.dataset.c;E.emo=t.dataset.e;document.querySelectorAll(".cat").forEach(x=>x.classList.toggle("on",x===t));updAmt();
+    if(E.type==="out"&&CAT_TALK[E.cat])say(CAT_TALK[E.cat]);return}
+  if(t.id==="goBtn"){if(!(+E.amt>0&&E.cat)){const m=!(+E.amt>0)?"先用下面的數字按鈕輸入金額喔 👇":"再選一個類別就可以囉 👆";toast(m);say(m);t.classList.remove("nudge");void t.offsetWidth;t.classList.add("nudge");return}
+    E.note=$("note").value;if(E.type==="in")commit(null);else askNeedWant();return}
+  if(t.dataset.nw){commit(t.dataset.nw);return}
+  if(t.id==="back"){drawEntry();return}
+};
+$("sheet").addEventListener("input",e=>{if(e.target.id==="note"&&E)E.note=e.target.value});
+
+document.addEventListener("pointerdown",function w(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)()}catch(e){}document.removeEventListener("pointerdown",w)});
+
+// ---------- reliable taps ----------
+(function(){
+  let btn=null,x=0,y=0,last=0;
+  document.addEventListener("pointerdown",e=>{const b=e.target.closest&&e.target.closest("button");btn=b||null;x=e.clientX;y=e.clientY;
+    if(b&&b.dataset.k){b.classList.add("hit");setTimeout(()=>b.classList.remove("hit"),150)}},true);
+  document.addEventListener("pointercancel",()=>{btn=null},true);
+  document.addEventListener("pointerup",e=>{const b=btn;btn=null;if(!b||!b.isConnected)return;
+    if(Math.abs(e.clientX-x)>14||Math.abs(e.clientY-y)>14)return;
+    last=Date.now();b.click();},true);
+  document.addEventListener("click",e=>{if(e.isTrusted&&Date.now()-last<700){e.stopPropagation();e.preventDefault()}},true);
+})();
+// greeting
+(function(){const s=streak(),h=new Date().getHours();
+  if(S.records.length&&!S.days.includes(today())&&s>0)say("你已經連續記帳 "+s+" 天了！今天也來記一筆，不要斷掉喔 🔥");
+  else if(S.records.length)say(pick([h<12?"早安！今天有什麼計畫嗎？☀️":"今天過得好嗎？有錢錢進出要告訴我喔！","我好想你～快來存錢錢 🦔"]));
+})();
+render();syncLabel();
+})();
+</script>
+</body>
+</html>
